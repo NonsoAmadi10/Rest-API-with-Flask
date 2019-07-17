@@ -6,6 +6,12 @@ import os
 # Initialize a Flask Server
 app = Flask(__name__)
 
+
+## Home Rout
+
+@app.route('/', methods=['GET'])
+def get():
+  return jsonify({ "message": "Welcome to Flask"})
  # Run the Server
-if __name__ = '__main__':
+if __name__ == '__main__':
   app.run(debug=True)
