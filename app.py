@@ -54,7 +54,7 @@ inventories_schema = InventorySchema(many=True, strict=True)
 def get():
   return jsonify({ "message": "Welcome to Flask"})
 
-
+## Ads an inventory
 @app.route('/inventory', methods=['POST'])
 def add_inventory():
  name= request.json['name']
@@ -68,14 +68,42 @@ def add_inventory():
 
  return inventory_schema.jsonify(new_inventory)
 
-
+## Gets all inventories
 @app.route('/inventory', methods=['GET'])
 def get_all_inventory():
  all_inventory = Inventory.query.all()
+ result = inventories_schema.dump(all_inventory)
 
- return inventories_schema.jsonify(all_inventory)
+ return jsonify(result.data)
+
+# Gets a specific inventory
+@app.route('/inventory/<id>', methods=['GET'])
+def get_inventory(id):
+ result = Inventory.query.get(id)
+ return inventory_schema.jsonify(result)
+
+# Updates an inventory Quantity 
+
+@app.route('/inventory/<id>', methods=['PATCH'])
+def patch_inventory(id):
+ qty= request.json['qty']
+ inventory = Inventory.query.get(id)
+ inventory.qty = qty
+
+ db.session.commit()
+
+ return inventory_schema.jsonify(inventory)
 
 
+# Deletes an Inventory 
+
+@app.route('/inventory/<id>', methods=['DELETE'])
+def delete_inventory(id):
+ inventory = Inventory.query.get(id)
+ db.session.delete(inventory)
+ db.session.commit()
+
+ return jsonify({ "message": "Inventory was successfully deleted "})
 
 
 
