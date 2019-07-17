@@ -84,7 +84,7 @@ def get_inventory(id):
 
 # Updates an inventory Quantity 
 
-@app.route('/inventory/<id>', methods=['PATCH'])
+@app.route('/inventory/qty/<id>', methods=['PATCH'])
 def patch_inventory(id):
  qty= request.json['qty']
  inventory = Inventory.query.get(id)
